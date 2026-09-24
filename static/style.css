@@ -14,8 +14,7 @@ body {
 body {
     min-height: 100vh;
 
-    /* BACKGROUND IMAGE */
-    background-image: url("/static/background.jpg");
+    background-image: url("/static/background.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -23,7 +22,6 @@ body {
 
     font-family: Arial, sans-serif;
 
-    /* CENTER CALCULATOR */
     display: flex;
     justify-content: center;
     align-items: center;

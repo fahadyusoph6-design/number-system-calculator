@@ -1,9 +1,21 @@
 ```css
+/* ================================
+   PAGE
+================================ */
+
+html,
 body {
     margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
     min-height: 100vh;
 
-    background-image: url("../static/background.jpg");
+    /* BACKGROUND IMAGE */
+    background-image: url("/static/background.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -11,112 +23,184 @@ body {
 
     font-family: Arial, sans-serif;
 
+    /* CENTER CALCULATOR */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Main calculator box */
+
+/* ================================
+   CALCULATOR PANEL
+================================ */
+
 .container {
     width: 90%;
     max-width: 500px;
-    margin: auto;
 
-    background: rgba(255, 255, 255, 0.95);
     padding: 30px;
+
+    /* YELLOW */
+    background-color: #FFD700;
+
+    /* BLACK BORDER */
+    border: 5px solid #000000;
     border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 
+    /* SHADOW */
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+
+    /* CENTER TEXT */
     text-align: center;
+
+    /* IMPORTANT */
+    box-sizing: border-box;
 }
 
-/* Title */
+
+/* ================================
+   TITLE
+================================ */
+
 h1 {
-    margin-bottom: 25px;
+    margin-top: 0;
+    margin-bottom: 10px;
+
+    color: #000000;
 }
 
-/* Form */
+
+/* ================================
+   DESCRIPTION
+================================ */
+
+.description {
+    margin-bottom: 25px;
+
+    color: #000000;
+}
+
+
+/* ================================
+   FORM
+================================ */
+
 form {
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Labels */
+
+/* ================================
+   LABELS
+================================ */
+
 label {
     width: 100%;
     max-width: 350px;
+
+    margin-bottom: 6px;
+
     text-align: left;
-    margin-top: 10px;
-    margin-bottom: 5px;
+
+    color: #000000;
     font-weight: bold;
 }
 
-/* Input box and select */
+
+/* ================================
+   INPUT + SELECT
+================================ */
+
 input,
 select {
     width: 100%;
     max-width: 350px;
-    box-sizing: border-box;
 
     padding: 12px;
+
     margin-bottom: 15px;
 
-    border: 1px solid #ccc;
+    box-sizing: border-box;
+
+    /* BLACK */
+    background-color: #000000;
+
+    /* YELLOW TEXT */
+    color: #FFD700;
+
+    border: 2px solid #000000;
     border-radius: 8px;
 
     font-size: 16px;
 }
 
-/* Convert button */
+
+/* ================================
+   BUTTON
+================================ */
+
 button {
     width: 100%;
     max-width: 350px;
 
     padding: 12px;
-    margin-top: 10px;
 
-    border: none;
+    margin-top: 5px;
+
+    background-color: #000000;
+    color: #FFD700;
+
+    border: 2px solid #000000;
     border-radius: 8px;
 
-    background: #333;
-    color: white;
-
     font-size: 16px;
+    font-weight: bold;
+
     cursor: pointer;
 }
 
 button:hover {
-    opacity: 0.85;
+    background-color: #333333;
 }
 
-/* Result */
+
+/* ================================
+   RESULT
+================================ */
+
 .result {
     margin-top: 25px;
+
+    padding: 15px;
+
+    background-color: #000000;
+    color: #FFD700;
+
+    border-radius: 8px;
+
     text-align: center;
 }
 
-/* Solution */
+
+/* ================================
+   SOLUTION
+================================ */
+
 .solution {
     margin-top: 20px;
+
+    padding: 15px;
+
+    background-color: #000000;
+    color: #FFD700;
+
+    border-radius: 8px;
+
     text-align: left;
 }
 ```
 
-### Important
-
-Your `index.html` must have the main calculator inside a container like this:
-
-```html
-<div class="container">
-    <!-- your calculator here -->
-</div>
-```
-
-If your class has a different name, such as:
-
-```html
-<div class="calculator">
-```
-
-tell me or **send me your current `index.html`**, and I'll fix the exact code so everything is centered without changing your calculator functions.

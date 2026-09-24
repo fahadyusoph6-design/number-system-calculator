@@ -1,58 +1,122 @@
+```css
 body {
+    margin: 0;
+    min-height: 100vh;
+
     background-image: url("../static/background.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Main calculator box */
 .container {
-    background: white;
-    width: 500px;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+
+    background: rgba(255, 255, 255, 0.95);
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+
+    text-align: center;
 }
 
+/* Title */
 h1 {
-    text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
 }
 
-.description {
-    text-align: center;
-    color: #666;
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-input,
-select,
-button {
+/* Labels */
+label {
     width: 100%;
-    padding: 10px;
-    margin-top: 8px;
-    box-sizing: border-box;
-}
-
-button {
-    cursor: pointer;
+    max-width: 350px;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
+/* Input box and select */
+input,
+select {
+    width: 100%;
+    max-width: 350px;
+    box-sizing: border-box;
+
+    padding: 12px;
+    margin-bottom: 15px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    font-size: 16px;
+}
+
+/* Convert button */
+button {
+    width: 100%;
+    max-width: 350px;
+
+    padding: 12px;
+    margin-top: 10px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #333;
+    color: white;
+
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+/* Result */
 .result {
     margin-top: 25px;
-    padding: 15px;
-    background: #f5f5f5;
-    border-radius: 8px;
+    text-align: center;
 }
 
+/* Solution */
 .solution {
     margin-top: 20px;
-    padding: 15px;
-    background: #fafafa;
-    border-radius: 8px;
-    line-height: 1.7;
+    text-align: left;
 }
+```
 
-.solution h3 {
-    margin-top: 0;
-}
+### Important
+
+Your `index.html` must have the main calculator inside a container like this:
+
+```html
+<div class="container">
+    <!-- your calculator here -->
+</div>
+```
+
+If your class has a different name, such as:
+
+```html
+<div class="calculator">
+```
+
+tell me or **send me your current `index.html`**, and I'll fix the exact code so everything is centered without changing your calculator functions.

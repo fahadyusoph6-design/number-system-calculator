@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Number System Calculator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>NUMBER SYSTEM CALCULATOR</h1>
+
+    <p class="description">
+        Convert numbers from Base 2 to Base 16
+    </p>
+
+    <form method="POST">
+
+        <label>Enter Number:</label>
+
+        <input
+            type="text"
+            name="number"
+            placeholder="Example: 101101"
+            required
+        >
+
+        <br>
+
+        <label>From Base:</label>
+
+        <select name="from_base">
+
+            {% for base in range(2, 17) %}
+
+                <option value="{{ base }}">
+                    Base {{ base }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br>
+
+        <label>To Base:</label>
+
+        <select name="to_base">
+
+            {% for base in range(2, 17) %}
+
+                <option value="{{ base }}">
+                    Base {{ base }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br>
+
+        <button type="submit">
+            CONVERT
+        </button>
+
+    </form>
+
+
+    {% if result %}
+
+    <div class="result">
+
+        <h2>Result</h2>
+
+        <strong>{{ result }}</strong>
+
+    </div>
+
+
+    <div class="solution">
+
+        <h3>Solution</h3>
+
+        {{ solution | safe }}
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+</body>
+
+</html>

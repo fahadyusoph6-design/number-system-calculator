@@ -2,39 +2,74 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-
 digits = "0123456789ABCDEF"
 
 
+# Convert a number from any base (2-16) to decimal
 def convert_to_decimal(number, base):
+    number = number.upper()
 
+    # Separate whole and fractional parts
+    if "." in number:
+        whole_part, fractional_part = number.split(".")
+    else:
+        whole_part = number
+        fractional_part = ""
+
+    # Convert whole-number part
     decimal = 0
 
-    for digit in number.upper():
-
+    for digit in whole_part:
         value = digits.index(digit)
-
         decimal = decimal * base + value
 
-    return decimal
+    # Convert fractional part
+    fraction = 0
+    power = 1
+
+    for digit in fractional_part:
+        value = digits.index(digit)
+        power *= base
+        fraction += value / power
+
+    return decimal + fraction
 
 
+# Convert decimal to any base (2-16)
 def convert_from_decimal(decimal, base):
+    # Whole part
+    whole = int(decimal)
+    fraction = decimal - whole
 
-    if decimal == 0:
-        return "0"
+    if whole == 0:
+        whole_result = "0"
+    else:
+        whole_result = ""
 
-    result = ""
+        while whole > 0:
+            remainder = whole % base
+            whole_result = digits[remainder] + whole_result
+            whole //= base
 
-    while decimal > 0:
+    # Fractional part
+    if fraction == 0:
+        return whole_result
 
-        remainder = decimal % base
+    fraction_result = ""
 
-        result = digits[remainder] + result
+    # Limit fractional digits to prevent infinite calculations
+    for _ in range(12):
+        fraction *= base
+        digit = int(fraction)
 
-        decimal = decimal // base
+        fraction_result += digits[digit]
 
-    return result
+        fraction -= digit
+
+        if fraction == 0:
+            break
+
+    return whole_result + "." + fraction_result
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -46,40 +81,42 @@ def home():
     if request.method == "POST":
 
         number = request.form["number"].upper()
-
         from_base = int(request.form["from_base"])
         to_base = int(request.form["to_base"])
 
-        # Convert to decimal first
         decimal_number = convert_to_decimal(number, from_base)
 
-        # Convert decimal to target base
         result = convert_from_decimal(decimal_number, to_base)
 
-        # Basic solution
+        # Remove unnecessary decimal .0
+        if decimal_number.is_integer():
+            decimal_display = str(int(decimal_number))
+        else:
+            decimal_display = str(decimal_number)
+
         solution = f"""
         <p><b>Step 1:</b> Convert Base {from_base} to decimal.</p>
 
         <p>
-        {number}<sub>{from_base}</sub>
-        =
-        {decimal_number}<sub>10</sub>
+            {number}<sub>{from_base}</sub>
+            =
+            {decimal_display}<sub>10</sub>
         </p>
 
         <p><b>Step 2:</b> Convert decimal to Base {to_base}.</p>
 
         <p>
-        {decimal_number}<sub>10</sub>
-        =
-        {result}<sub>{to_base}</sub>
+            {decimal_display}<sub>10</sub>
+            =
+            {result}<sub>{to_base}</sub>
         </p>
 
         <p><b>Final Answer:</b></p>
 
         <p>
-        {number}<sub>{from_base}</sub>
-        =
-        <strong>{result}<sub>{to_base}</sub></strong>
+            {number}<sub>{from_base}</sub>
+            =
+            <strong>{result}<sub>{to_base}</sub></strong>
         </p>
         """
 

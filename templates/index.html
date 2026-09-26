@@ -1,11 +1,12 @@
-```html
 <!DOCTYPE html>
 <html>
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Number System Calculator</title>
 
@@ -15,22 +16,65 @@
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 
 <body>
 
-    <div class="scene">
+<div class="scene">
 
-        <div class="calculator">
+    <div class="calculator">
 
-            <h1>NUMBER SYSTEM CALCULATOR</h1>
+        <h1>NUMBER SYSTEM CALCULATOR</h1>
 
-            <p class="description">
-                Convert numbers from Base 2 to Base 16
-            </p>
+        <p class="description">
+            Convert and calculate numbers from Base 2 to Base 16
+        </p>
 
 
-            <form method="POST">
+        <form method="POST">
+
+
+            <!-- OPERATION -->
+
+            <label for="operation">
+                Choose Operation:
+            </label>
+
+            <select
+                id="operation"
+                name="operation"
+                onchange="changeOperation()">
+
+                <option value="convert"
+                    {% if operation == "convert" %}selected{% endif %}>
+                    Convert
+                </option>
+
+                <option value="add"
+                    {% if operation == "add" %}selected{% endif %}>
+                    Add
+                </option>
+
+                <option value="subtract"
+                    {% if operation == "subtract" %}selected{% endif %}>
+                    Subtract
+                </option>
+
+                <option value="multiply"
+                    {% if operation == "multiply" %}selected{% endif %}>
+                    Multiply
+                </option>
+
+            </select>
+
+
+            <!-- ========================= -->
+            <!-- CONVERT SECTION -->
+            <!-- ========================= -->
+
+            <div id="convertSection">
 
                 <label for="number">
                     Enter Number:
@@ -41,7 +85,6 @@
                     type="text"
                     name="number"
                     placeholder="Example: 101101"
-                    required
                 >
 
 
@@ -49,7 +92,9 @@
                     From Base:
                 </label>
 
-                <select id="from_base" name="from_base">
+                <select
+                    id="from_base"
+                    name="from_base">
 
                     {% for base in range(2, 17) %}
 
@@ -66,7 +111,9 @@
                     To Base:
                 </label>
 
-                <select id="to_base" name="to_base">
+                <select
+                    id="to_base"
+                    name="to_base">
 
                     {% for base in range(2, 17) %}
 
@@ -78,42 +125,157 @@
 
                 </select>
 
-
-                <button type="submit">
-                    CONVERT
-                </button>
-
-            </form>
+            </div>
 
 
-            {% if result %}
+            <!-- ========================= -->
+            <!-- CALCULATION SECTION -->
+            <!-- ========================= -->
 
-                <div class="result">
+            <div id="calculationSection">
 
-                    <h2>RESULT</h2>
+                <label for="number1">
+                    First Number:
+                </label>
 
-                    <div class="answer">
-                        {{ result }}
-                    </div>
+                <input
+                    id="number1"
+                    type="text"
+                    name="number1"
+                    placeholder="Example: 1011"
+                >
 
-                </div>
+
+                <label for="number2">
+                    Second Number:
+                </label>
+
+                <input
+                    id="number2"
+                    type="text"
+                    name="number2"
+                    placeholder="Example: 1101"
+                >
 
 
-                <div class="solution">
+                <label for="base">
+                    Number Base:
+                </label>
 
-                    <h3>SOLUTION</h3>
+                <select
+                    id="base"
+                    name="base">
 
-                    {{ solution | safe }}
+                    {% for base in range(2, 17) %}
 
-                </div>
+                        <option value="{{ base }}">
+                            Base {{ base }}
+                        </option>
 
-            {% endif %}
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button type="submit">
+                CALCULATE
+            </button>
+
+        </form>
+
+
+        <!-- ERROR -->
+
+        {% if error %}
+
+        <div class="error">
+
+            {{ error }}
 
         </div>
 
+        {% endif %}
+
+
+        <!-- RESULT -->
+
+        {% if result %}
+
+        <div class="result">
+
+            <h2>RESULT</h2>
+
+            <div class="answer">
+                {{ result }}
+            </div>
+
+        </div>
+
+
+        <!-- SOLUTION -->
+
+        <div class="solution">
+
+            <h3>SOLUTION</h3>
+
+            {{ solution | safe }}
+
+        </div>
+
+        {% endif %}
+
+
     </div>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================= -->
+
+<script>
+
+function changeOperation() {
+
+    const operation =
+        document.getElementById("operation").value;
+
+    const convertSection =
+        document.getElementById("convertSection");
+
+    const calculationSection =
+        document.getElementById("calculationSection");
+
+
+    if (operation === "convert") {
+
+        convertSection.style.display = "flex";
+
+        calculationSection.style.display = "none";
+
+    } else {
+
+        convertSection.style.display = "none";
+
+        calculationSection.style.display = "flex";
+
+    }
+
+}
+
+
+/* Run when page loads */
+
+changeOperation();
+
+</script>
+
 
 </body>
 
 </html>
-```

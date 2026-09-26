@@ -5,42 +5,51 @@ app = Flask(__name__)
 digits = "0123456789ABCDEF"
 
 
-# Convert a number from any base (2-16) to decimal
+# =========================
+# BASE CONVERSION
+# =========================
+
 def convert_to_decimal(number, base):
     number = number.upper()
 
-    # Separate whole and fractional parts
     if "." in number:
         whole_part, fractional_part = number.split(".")
     else:
         whole_part = number
         fractional_part = ""
 
-    # Convert whole-number part
     decimal = 0
 
+    # Whole part
     for digit in whole_part:
         value = digits.index(digit)
+
+        if value >= base:
+            raise ValueError("Invalid digit for selected base.")
+
         decimal = decimal * base + value
 
-    # Convert fractional part
+    # Fractional part
     fraction = 0
     power = 1
 
     for digit in fractional_part:
         value = digits.index(digit)
+
+        if value >= base:
+            raise ValueError("Invalid digit for selected base.")
+
         power *= base
         fraction += value / power
 
     return decimal + fraction
 
 
-# Convert decimal to any base (2-16)
 def convert_from_decimal(decimal, base):
-    # Whole part
     whole = int(decimal)
     fraction = decimal - whole
 
+    # Whole number
     if whole == 0:
         whole_result = "0"
     else:
@@ -51,13 +60,13 @@ def convert_from_decimal(decimal, base):
             whole_result = digits[remainder] + whole_result
             whole //= base
 
-    # Fractional part
-    if fraction == 0:
+    # No fraction
+    if abs(fraction) < 1e-12:
         return whole_result
 
+    # Fraction
     fraction_result = ""
 
-    # Limit fractional digits to prevent infinite calculations
     for _ in range(12):
         fraction *= base
         digit = int(fraction)
@@ -66,64 +75,173 @@ def convert_from_decimal(decimal, base):
 
         fraction -= digit
 
-        if fraction == 0:
+        if abs(fraction) < 1e-12:
             break
 
     return whole_result + "." + fraction_result
 
+
+# =========================
+# MAIN PAGE
+# =========================
 
 @app.route("/", methods=["GET", "POST"])
 def home():
 
     result = ""
     solution = ""
+    error = ""
+
+    operation = "convert"
 
     if request.method == "POST":
 
-        number = request.form["number"].upper()
-        from_base = int(request.form["from_base"])
-        to_base = int(request.form["to_base"])
+        try:
 
-        decimal_number = convert_to_decimal(number, from_base)
+            operation = request.form.get("operation", "convert")
 
-        result = convert_from_decimal(decimal_number, to_base)
+            # =================================
+            # CONVERT
+            # =================================
 
-        # Remove unnecessary decimal .0
-        if decimal_number.is_integer():
-            decimal_display = str(int(decimal_number))
-        else:
-            decimal_display = str(decimal_number)
+            if operation == "convert":
 
-        solution = f"""
-        <p><b>Step 1:</b> Convert Base {from_base} to decimal.</p>
+                number = request.form["number"].upper()
+                from_base = int(request.form["from_base"])
+                to_base = int(request.form["to_base"])
 
-        <p>
-            {number}<sub>{from_base}</sub>
-            =
-            {decimal_display}<sub>10</sub>
-        </p>
+                decimal_number = convert_to_decimal(number, from_base)
 
-        <p><b>Step 2:</b> Convert decimal to Base {to_base}.</p>
+                result = convert_from_decimal(decimal_number, to_base)
 
-        <p>
-            {decimal_display}<sub>10</sub>
-            =
-            {result}<sub>{to_base}</sub>
-        </p>
+                if decimal_number.is_integer():
+                    decimal_display = str(int(decimal_number))
+                else:
+                    decimal_display = str(decimal_number)
 
-        <p><b>Final Answer:</b></p>
+                solution = f"""
+                <p><b>Step 1:</b> Convert Base {from_base} to decimal.</p>
 
-        <p>
-            {number}<sub>{from_base}</sub>
-            =
-            <strong>{result}<sub>{to_base}</sub></strong>
-        </p>
-        """
+                <p>
+                    {number}<sub>{from_base}</sub>
+                    =
+                    {decimal_display}<sub>10</sub>
+                </p>
+
+                <p><b>Step 2:</b> Convert decimal to Base {to_base}.</p>
+
+                <p>
+                    {decimal_display}<sub>10</sub>
+                    =
+                    {result}<sub>{to_base}</sub>
+                </p>
+
+                <p><b>Final Answer:</b></p>
+
+                <p>
+                    {number}<sub>{from_base}</sub>
+                    =
+                    <strong>{result}<sub>{to_base}</sub></strong>
+                </p>
+                """
+
+            # =================================
+            # ADD / SUBTRACT / MULTIPLY
+            # =================================
+
+            else:
+
+                number1 = request.form["number1"].upper()
+                number2 = request.form["number2"].upper()
+
+                base = int(request.form["base"])
+
+                decimal1 = convert_to_decimal(number1, base)
+                decimal2 = convert_to_decimal(number2, base)
+
+                if operation == "add":
+
+                    decimal_answer = decimal1 + decimal2
+                    symbol = "+"
+
+                elif operation == "subtract":
+
+                    decimal_answer = decimal1 - decimal2
+                    symbol = "-"
+
+                elif operation == "multiply":
+
+                    decimal_answer = decimal1 * decimal2
+                    symbol = "×"
+
+                else:
+                    raise ValueError("Invalid operation.")
+
+                # Convert answer back to selected base
+                if decimal_answer >= 0:
+                    result = convert_from_decimal(decimal_answer, base)
+
+                else:
+                    positive_answer = convert_from_decimal(
+                        abs(decimal_answer), base
+                    )
+
+                    result = "-" + positive_answer
+
+                solution = f"""
+                <p><b>Step 1:</b> Convert the numbers to decimal.</p>
+
+                <p>
+                    {number1}<sub>{base}</sub>
+                    =
+                    {decimal1}<sub>10</sub>
+                </p>
+
+                <p>
+                    {number2}<sub>{base}</sub>
+                    =
+                    {decimal2}<sub>10</sub>
+                </p>
+
+                <p><b>Step 2:</b> Perform the operation.</p>
+
+                <p>
+                    {decimal1} {symbol} {decimal2}
+                    =
+                    {decimal_answer}
+                </p>
+
+                <p><b>Step 3:</b> Convert the decimal answer back to Base {base}.</p>
+
+                <p>
+                    {decimal_answer}<sub>10</sub>
+                    =
+                    {result}<sub>{base}</sub>
+                </p>
+
+                <p><b>Final Answer:</b></p>
+
+                <p>
+                    <strong>
+                        {number1}<sub>{base}</sub>
+                        {symbol}
+                        {number2}<sub>{base}</sub>
+                        =
+                        {result}<sub>{base}</sub>
+                    </strong>
+                </p>
+                """
+
+        except Exception as e:
+
+            error = "Invalid number or digit for the selected base."
 
     return render_template(
         "index.html",
         result=result,
-        solution=solution
+        solution=solution,
+        error=error,
+        operation=operation
     )
 
 

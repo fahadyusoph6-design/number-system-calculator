@@ -1,0 +1,138 @@
+```css
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #000;
+}
+
+
+/* =========================
+   INTRO PAGE
+   ========================= */
+
+.intro-page {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: #000;
+    overflow: hidden;
+}
+
+
+/* =========================
+   VIDEO
+   ========================= */
+
+.intro-video {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    z-index: 1;
+}
+
+
+/* =========================
+   CONTINUE BUTTON
+   ========================= */
+
+.continue-container {
+    position: absolute;
+
+    left: 0;
+    bottom: 50px;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    z-index: 2;
+}
+
+.continue-button {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    min-width: 180px;
+    height: 55px;
+
+    padding: 0 30px;
+
+    background: #000;
+    color: #ffd000;
+
+    border: 3px solid #ffd000;
+    border-radius: 12px;
+
+    text-decoration: none;
+
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    box-shadow:
+        0 6px 0 #555,
+        0 10px 20px rgba(0, 0, 0, 0.5);
+
+    transition: 0.2s;
+}
+
+.continue-button:hover {
+    transform: translateY(-3px);
+
+    background: #ffd000;
+    color: #000;
+
+    box-shadow:
+        0 9px 0 #555,
+        0 14px 25px rgba(0, 0, 0, 0.6);
+}
+
+.continue-button:active {
+    transform: translateY(4px);
+
+    box-shadow:
+        0 2px 0 #555,
+        0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+
+    .continue-container {
+        bottom: 30px;
+    }
+
+    .continue-button {
+        min-width: 160px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+}
+```

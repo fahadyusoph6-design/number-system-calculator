@@ -1,0 +1,58 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Welcome</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='intro.css') }}">
+
+</head>
+
+<body>
+
+    <div class="intro-page">
+
+        <!-- 6-SECOND INTRO VIDEO -->
+
+        <video
+            class="intro-video"
+            autoplay
+            muted
+            playsinline>
+
+            <source
+                src="{{ url_for('static', filename='intro.mp4') }}"
+                type="video/mp4">
+
+            Your browser does not support video.
+
+        </video>
+
+
+        <!-- CONTINUE BUTTON -->
+
+        <div class="continue-container">
+
+            <a href="/calculator"
+               class="continue-button">
+
+                CONTINUE
+
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+```

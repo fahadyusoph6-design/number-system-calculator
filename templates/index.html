@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 
@@ -65,6 +66,11 @@
                 <option value="multiply"
                     {% if operation == "multiply" %}selected{% endif %}>
                     Multiply
+                </option>
+
+                <option value="divide"
+                    {% if operation == "divide" %}selected{% endif %}>
+                    Divide
                 </option>
 
             </select>
@@ -279,3 +285,4 @@ changeOperation();
 </body>
 
 </html>
+```
